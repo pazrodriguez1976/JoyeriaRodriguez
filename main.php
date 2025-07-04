@@ -93,7 +93,57 @@
         }
         leer("\nPresione ENTER para continuar ...");
     }
+    function agregarCliente(): void {
+        global $db; 
+        mostrar("--- Agregar Nuevo Cliente ---");
+        $nombre = leer("Nombre del cliente: ");
+        $apellido = leer("Apellido del cliente: ");
+        $telefono = leer("Teléfono del cliente (opcional): ");
 
+        $cliente = new Cliente($nombre, $apellido, $telefono);
+        $db->agregarCliente($cliente);
+        mostrar("Cliente agregado con ID: " . $cliente->getId());
+        leer("\nPresione ENTER para continuar ...");
+    }
+    
+    function borrarCliente(): void {
+        global $db;
+        mostrar("--- Borrar Cliente ---");
+        listarClientes();
+        $id = (int) leer("Ingrese el ID del cliente a borrar: ");
+
+        if ($db->borrarClientePorId($id)) {
+            mostrar("Cliente con ID $id borrado exitosamente.");
+        } else {
+            mostrar("No se encontró un cliente con ID $id.");
+        }
+        leer("\nPresione ENTER para continuar ...");
+    }
+
+    function modificarCliente(): void {
+        global $db;
+        mostrar("--- Modificar Cliente ---");
+        listarClientes();
+        $id = (int) leer("Ingrese el ID del cliente a modificar: ");
+        $cliente = $db->buscarClientePorId($id);
+
+        if ($cliente) {
+            mostrar("Cliente encontrado: " . $cliente->__toString());
+            $nombre = leer("Nuevo Nombre (dejar vacío para no cambiar): ");
+            if (!empty($nombre)) $cliente->setNombre($nombre);
+
+            $apellido = leer("Nuevo Apellido (dejar vacío para no cambiar): ");
+            if (!empty($apellido)) $cliente->setApellido($apellido);
+
+            $telefono = leer("Nuevo Teléfono (dejar vacío para no cambiar): ");
+            if (!empty($telefono)) $cliente->setTelefono($telefono);
+
+            mostrar("Cliente con ID $id modificado exitosamente.");
+        } else {
+            mostrar("No se encontró un cliente con ID $id.");
+        }
+        leer("\nPresione ENTER para continuar ...");
+    }
 
 
     function gestionarAnillos(): void { 
