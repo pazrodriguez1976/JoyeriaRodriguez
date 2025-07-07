@@ -220,10 +220,11 @@
         leer("\nPresione ENTER para continuar ...");
     }
 
+    
     function vender(): void {
         global $db;
         mostrar("--- Realizar Venta ---");
-        
+
         // Seleccionar Cliente
         listarClientes();
         $idCliente = (int) leer("Ingrese el ID del cliente que realiza la compra: ");
@@ -233,6 +234,7 @@
             leer("\nPresione ENTER para continuar ...");
             return;
         }
+
 
 
         // Seleccionar Joya (Anillo o Pulsera)
