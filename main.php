@@ -224,16 +224,6 @@
         global $db;
         mostrar("--- Realizar Venta ---");
 
-        // Seleccionar Cliente
-        listarClientes();
-        $idCliente = (int) leer("Ingrese el ID del cliente que realiza la compra: ");
-        $cliente = $db->buscarClientePorId($idCliente);
-        if (!$cliente) {
-            mostrar("Cliente no encontrado.");
-            leer("\nPresione ENTER para continuar ...");
-            return;
-        }
-
         // Seleccionar Joya (Anillo o Pulsera)
         mostrar("¿Qué tipo de joya desea vender?");
         mostrar("1. Anillo");
