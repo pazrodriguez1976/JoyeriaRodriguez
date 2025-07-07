@@ -220,6 +220,64 @@
         leer("\nPresione ENTER para continuar ...");
     }
 
+    function vender(): void {
+        global $db;
+        mostrar("--- Realizar Venta ---");
+
+        // Seleccionar Cliente
+        listarClientes();
+        $idCliente = (int) leer("Ingrese el ID del cliente que realiza la compra: ");
+        $cliente = $db->buscarClientePorId($idCliente);
+        if (!$cliente) {
+            mostrar("Cliente no encontrado.");
+            leer("\nPresione ENTER para continuar ...");
+            return;
+        }
+
+        // Seleccionar Joya (Anillo o Pulsera)
+        mostrar("¿Qué tipo de joya desea vender?");
+        mostrar("1. Anillo");
+        mostrar("2. Pulsera");
+        $opcionTipoJoya = (int) leer("Seleccione una opción: ");
+
+        $joya = null;
+        $tipoJoyaStr = "";
+
+        if ($opcionTipoJoya === 1) {
+            listarAnillos();
+            $idJoya = (int) leer("Ingrese el ID del anillo a vender: ");
+            $joya = $db->buscarAnilloPorId($idJoya);
+            $tipoJoyaStr = "Anillo";
+        } elseif ($opcionTipoJoya === 2) {
+            listarPulseras();
+            $idJoya = (int) leer("Ingrese el ID de la pulsera a vender: ");
+            $joya = $db->buscarPulseraPorId($idJoya);
+            $tipoJoyaStr = "Pulsera";
+        } else {
+            mostrar("Opción de tipo de joya inválida.");
+            leer("\nPresione ENTER para continuar ...");
+            return;
+        }
+
+        if (!$joya) {
+            mostrar("Joya seleccionada no encontrada.");
+            leer("\nPresione ENTER para continuar ...");
+            return;
+        }
+
+        mostrar("Joya seleccionada: " . $joya->getNombre() . " (Precio: $" . number_format($joya->getPrecioUnitario(), 2) . ")");
+        $cantidad = (int) leer("Ingrese la cantidad a vender: ");
+
+        if ($cantidad <= 0) {
+            mostrar("La cantidad debe ser un número positivo.");
+            leer("\nPresione ENTER para continuar ...");
+            return;
+        }
+
+        $db->agregarVenta(new Venta($joya->getId(), $cliente->getId(), $cantidad, $joya->getPrecioUnitario()));
+        mostrar("Venta de $cantidad x $tipoJoyaStr '" . $joya->getNombre() . "' al cliente '" . $cliente->getNombre() . " " . $cliente->getApellido() . "' registrada exitosamente.");
+        leer("\nPresione ENTER para continuar ...");
+    }
 
     function gestionarAnillos(): void { 
         $menu = Menu::getMenuAnillos();
