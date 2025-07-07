@@ -93,6 +93,81 @@
         }
         leer("\nPresione ENTER para continuar ...");
     }
+
+     function listarPulseras(): void {
+        global $db;
+        mostrar("--- Listado de Pulseras ---");
+        $pulseras = $db->getPulseras();
+        if (empty($pulseras)) {
+            mostrar("No hay pulseras en el inventario.");
+        } else {
+            foreach ($pulseras as $pulsera) {
+                mostrar($pulsera->__toString());
+            }
+        }
+        leer("\nPresione ENTER para continuar ...");
+    }
+
+    function agregarPulsera(): void {
+        global $db;
+        mostrar("--- Agregar Nueva Pulsera ---");
+
+        $nombre = leer("Nombre/Descripción de la pulsera: ");
+        $pesoGramos = (float) leer("Peso en gramos: ");
+        $medida = leer("Medida (ej. '18cm', 'M', 'L'): ");
+        $tipoPiedra = leer("Tipo de Piedra (ej. 'Ágata', 'Sin Piedra'): ");
+        $precioUnitario = (float) leer("Precio de venta unitario: $");
+
+        $pulsera = new Pulsera($nombre, $pesoGramos, $medida, $tipoPiedra, $precioUnitario);
+        $db->agregarPulsera($pulsera);
+        mostrar("Pulsera agregada con ID: " . $pulsera->getId());
+        leer("\nPresione ENTER para continuar ...");
+    }
+    
+    function borrarPulsera(): void {
+        global $db;
+        mostrar("--- Borrar Pulsera ---");
+        listarPulseras();
+        $id = (int) leer("Ingrese el ID de la pulsera a borrar: ");
+
+        if ($db->borrarPulseraPorId($id)) {
+            mostrar("Pulsera con ID $id borrada exitosamente.");
+        } else {
+            mostrar("No se encontró una pulsera con ID $id.");
+        }
+        leer("\nPresione ENTER para continuar ...");
+    }
+
+    function modificarPulsera(): void {
+        global $db;
+        mostrar("--- Modificar Pulsera ---");
+        listarPulseras();
+        $id = (int) leer("Ingrese el ID de la pulsera a modificar: ");
+        $pulsera = $db->buscarPulseraPorId($id);
+
+        if ($pulsera) {
+            mostrar("Pulsera encontrada: " . $pulsera->__toString());
+            $nombre = leer("Nuevo Nombre/Descripción (dejar vacío para no cambiar): ");
+            if (!empty($nombre)) $pulsera->setNombre($nombre);
+
+            $pesoGramos = leer("Nuevo Peso en gramos (dejar vacío para no cambiar): ");
+            if (!empty($pesoGramos)) $pulsera->setPesoGramos((float)$pesoGramos);
+
+            $medida = leer("Nueva Medida (dejar vacío para no cambiar): ");
+            if (!empty($medida)) $pulsera->setMedida($medida);
+
+            $tipoPiedra = leer("Nuevo Tipo de Piedra (dejar vacío para no cambiar): ");
+            if (!empty($tipoPiedra)) $pulsera->setTipoPiedra($tipoPiedra);
+
+            $precioUnitario = leer("Nuevo Precio de venta unitario (dejar vacío para no cambiar): $");
+            if (!empty($precioUnitario)) $pulsera->setPrecioUnitario((float)$precioUnitario);
+
+            mostrar("Pulsera con ID $id modificada exitosamente.");
+        } else {
+            mostrar("No se encontró una pulsera con ID $id.");
+        }
+        leer("\nPresione ENTER para continuar ...");
+    }
     function agregarCliente(): void {
         global $db; 
         mostrar("--- Agregar Nuevo Cliente ---");
