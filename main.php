@@ -168,6 +168,20 @@
         }
         leer("\nPresione ENTER para continuar ...");
     }
+    
+    function listarClientes(): void {
+        global $db;
+        mostrar("--- Listado de Clientes ---");
+        $clientes = $db->getClientes();
+        if (empty($clientes)) {
+            mostrar("No hay clientes registrados.");
+        } else {
+            foreach ($clientes as $cliente) {
+                mostrar($cliente->__toString());
+            }
+        }
+        leer("\nPresione ENTER para continuar ...");
+    }
     function agregarCliente(): void {
         global $db; 
         mostrar("--- Agregar Nuevo Cliente ---");
