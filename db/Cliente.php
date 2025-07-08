@@ -1,12 +1,12 @@
 <?php
 
 class Cliente {
-    static int $ultimoId = 0;
+    static int $ultimoId = 0; // Para generar IDs únicos para Clientes
 
     private int $id;
     private string $nombre;
     private string $apellido;
-    private string $telefono;
+    private string $telefono; 
 
     public function __construct(string $nombre, string $apellido, string $telefono = '') {
         $this->id = ++Cliente::$ultimoId;
@@ -26,9 +26,7 @@ class Cliente {
     public function setApellido(string $apellido): void { $this->apellido = $apellido; }
     public function setTelefono(string $telefono): void { $this->telefono = $telefono; }
 
-    /**
-     * Representación de cadena del objeto Cliente.
-     */
+  
     public function __toString(): string {
         return "ID: " . $this->getId() . " | Nombre: " . $this->getNombre() .
                " | Apellido: " . $this->getApellido() . " | Teléfono: " . $this->getTelefono();

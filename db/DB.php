@@ -1,12 +1,13 @@
 <?php
 
-class DB {
-    private array $anillos = [];
-    private array $pulseras = [];
-    private array $clientes = [];
-    private array $ventas = [];
 
-    // Métodos para Anillos
+class DB {
+    private array $anillos = []; 
+    private array $pulseras = []; 
+    private array $clientes = []; 
+    private array $ventas = []; 
+
+    // Métodos para Anillos 
     function agregarAnillo(Anillo $anillo): void {
         $this->anillos[] = $anillo;
     }
@@ -35,7 +36,7 @@ class DB {
 
     function borrarAnilloPorId(int $id): bool {
         $indice = $this->buscarIndiceAnilloPorId($id);
-        if ($indice !== null) {
+        if ($indice !== null) { 
             array_splice($this->anillos, $indice, 1);
             return true;
         } else {
@@ -43,7 +44,7 @@ class DB {
         }
     }
 
-    // Métodos para Pulseras
+    // Métodos para Pulseras 
     function agregarPulsera(Pulsera $pulsera): void {
         $this->pulseras[] = $pulsera;
     }
@@ -80,7 +81,7 @@ class DB {
         }
     }
 
-    // Métodos para Clientes
+    // Métodos para Clientes 
     function agregarCliente(Cliente $cliente): void {
         $this->clientes[] = $cliente;
     }
@@ -117,12 +118,40 @@ class DB {
         }
     }
 
-    // Métodos para Ventas
+    // Métodos para Ventas (MODIFICADOS para CRUD)
     function agregarVenta(Venta $venta): void {
         $this->ventas[] = $venta;
     }
 
     function getVentas(): array {
         return $this->ventas;
+    }
+
+    function buscarVentaPorId(int $id): ?Venta {
+        foreach ($this->ventas as $venta) {
+            if ($venta->getId() == $id) {
+                return $venta;
+            }
+        }
+        return null;
+    }
+
+    function buscarIndiceVentaPorId(int $id): ?int {
+        foreach ($this->ventas as $indice => $venta) {
+            if ($venta->getId() == $id) {
+                return $indice;
+            }
+        }
+        return null;
+    }
+
+    function borrarVentaPorId(int $id): bool {
+        $indice = $this->buscarIndiceVentaPorId($id);
+        if ($indice !== null) {
+            array_splice($this->ventas, $indice, 1);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
