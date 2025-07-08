@@ -1,6 +1,5 @@
 <?php
-require_once ('Opcion.php');
-require_once('Util.php'); 
+require_once ('Opcion.php'); 
 
 class Menu {
     private string $titulo;
@@ -16,14 +15,13 @@ class Menu {
     }
 
     private function mostrar(): void {
-        system('cls'); // Para sistemas Linux/macOS. En Windows, usa 'cls'.
+        system('cls');
         mostrar($this->titulo);
         mostrar(str_pad('', strlen($this->titulo), '-'));
 
         foreach ($this->opciones as $key => $opcion) {
             mostrar("\033[1;31m".$key."\033[0m"."-".$opcion->getNombre());
         }
-        // Agregamos un salto de línea al final para mejor lectura
         mostrar("");
     }
 
@@ -31,7 +29,7 @@ class Menu {
         $this->mostrar();
         $opcionSeleccionada = null;
         do {
-            $entrada = leer("Seleccione una opción: "); // Usar leer() para consistencia
+            $entrada = leer("Seleccione una opción:\n"); 
             if (isset($this->opciones[$entrada])) {
                 $opcionSeleccionada = $this->opciones[$entrada];
             } else {
@@ -48,13 +46,13 @@ class Menu {
         $menu->addOpcion( new Opcion('Gestionar Anillos', 'gestionarAnillos')); 
         $menu->addOpcion( new Opcion('Gestionar Pulseras', 'gestionarPulseras')); 
         $menu->addOpcion( new Opcion('Gestionar Clientes', 'gestionarClientes')); 
-        $menu->addOpcion( new Opcion('Realizar Venta', 'vender')); 
+        $menu->addOpcion( new Opcion('Gestionar Ventas', 'gestionarVentas')); 
         return $menu;
     }
 
     static function getMenuAnillos(): Menu {
         $menu = new Menu('Menu Anillos');
-        $menu->addOpcion( new Opcion('Volver', 'Volver')); // Usamos 'Volver' para salir del submenú
+        $menu->addOpcion( new Opcion('Volver', 'Volver')); 
         $menu->addOpcion( new Opcion('Listar Anillos', 'listarAnillos'));
         $menu->addOpcion( new Opcion('Agregar Anillo', 'agregarAnillo'));
         $menu->addOpcion( new Opcion('Borrar Anillo', 'borrarAnillo'));
@@ -79,6 +77,16 @@ class Menu {
         $menu->addOpcion( new Opcion('Agregar Cliente', 'agregarCliente'));
         $menu->addOpcion( new Opcion('Borrar Cliente', 'borrarCliente'));
         $menu->addOpcion( new Opcion('Modificar Cliente', 'modificarCliente'));
+        return $menu;
+    }
+
+    static function getMenuVentas(): Menu {
+        $menu = new Menu('Menu Ventas');
+        $menu->addOpcion( new Opcion('Volver', 'Volver'));
+        $menu->addOpcion( new Opcion('Realizar Nueva Venta', 'realizarVenta')); 
+        $menu->addOpcion( new Opcion('Listar Ventas', 'listarVentas'));
+        $menu->addOpcion( new Opcion('Borrar Venta', 'borrarVenta')); 
+        $menu->addOpcion( new Opcion('Modificar Venta', 'modificarVenta')); 
         return $menu;
     }
 }
